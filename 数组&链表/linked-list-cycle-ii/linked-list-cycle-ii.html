@@ -45,7 +45,27 @@
                     fast = fast.next.next
                     if (slow === fast)  break
                 }
-                // 存在环的情况，第一次相遇，此时 slow === fast（相遇点不一定是链表尾部和链表的连接节点）
+                // 存在环的情况，第一次相遇，此时 slow === fast（相遇点不一定是链表环的入口）
+                /*
+                    fast 和 slow 的步数关系
+                    设：
+                        链表头到链表环有 a 步
+                        链表环有 b 步
+                    1.fast是slow的两倍，f = 2s
+                    2.fast和slow在链表环入口处再次相遇时，fast比slow多走了 n 个环，f = s + nb
+                    由以上1、2可得：
+                        s = nb
+                        f = 2nb
+                    
+                    可知：从链表头走到链表环入口节点时的步数 k = a + nb
+                    由上可知：slow走过的步数是 nb
+                    所以：slow再走 a 步则可到达链表环入口
+
+                    a = ???
+                    若新建一个指针指向 head，并且将步长改为和 slow 一样，
+                    则可以在 a 步之后，在链表环入口处相遇
+                    所以 fast = head
+                */
                 fast = head
                 while (slow !== fast) {
                     slow = slow.next
