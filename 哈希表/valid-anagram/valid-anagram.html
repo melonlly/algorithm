@@ -39,6 +39,23 @@
             var isAnagram1 = function(s, t) {
                 const map1 = {}
                 const map2 = {}
+                for(let i = 0; i < s.length; i++) {
+                    const c = s.charAt(i)
+                    if (map1.hasOwnProperty(c)) {
+                        map1[c]++
+                    } else {
+                        map1[c] = 1
+                    }
+                }
+                for(let i = 0; i < t.length; i++) {
+                    const c = t.charAt(i)
+                    if (map2.hasOwnProperty(c)) {
+                        map2[c]++
+                    } else {
+                        map2[c] = 1
+                    }
+                }
+                return map1 == map2
             };
             console.log(isAnagram1("anagram", "nagaram"));
 
