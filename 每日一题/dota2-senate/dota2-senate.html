@@ -43,14 +43,43 @@
              * @param {string} senate
              * @return {string}
              */
-             /*
+            /*
                 R 和 D
                     1.人数多的必然获胜
                     2.若人数相同，最后一轮的两个人，谁先行使权力，则获胜
              */
             var predictPartyVictory = function (senate) {
-
+                const remain = senate.length % 2 === 1 ? 1 : 2;
+                let senators = senate.split("");
+                let next = []; // 下一轮参议员
+                while (senators.length > remain) {
+                    let tmp = "";
+                    for (let i = 0; i < senators.length; i++) {
+                        if (tmp.length > 0) {
+                            const first = tmp[0];
+                            if (first == senators[i]) {
+                                tmp += senators[i];
+                                next.push(senators[i]);
+                            } else {
+                                tmp = "";
+                            }
+                        } else {
+                            tmp += senators[i];
+                            next.push(senators[i]);
+                        }
+                    }
+                    console.log(senators);
+                    senators = next;
+                    next = [];
+                }
+                return senators[0] == "R" ? "Radiant" : "Dire";
             };
+            // console.log(predictPartyVictory("RD")); // R
+            console.log(predictPartyVictory("RDD")); // D
+            // console.log(predictPartyVictory("RDDR")); // 
+            // console.log(predictPartyVictory("RDRD"));
+            // console.log(predictPartyVictory("DDRR"));
+            // console.log(predictPartyVictory("DRRD"));
         </script>
     </body>
 </html>
