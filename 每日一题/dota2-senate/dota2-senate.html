@@ -55,6 +55,7 @@
                 while (senators.length > remain) {
                     let tmp = "";
                     for (let i = 0; i < senators.length; i++) {
+                        console.log(tmp);
                         if (tmp.length > 0) {
                             const first = tmp[0];
                             if (first == senators[i]) {
@@ -65,10 +66,10 @@
                             }
                         } else {
                             tmp += senators[i];
-                            next.push(senators[i]);
+                            // next.push(senators[i]);
                         }
                     }
-                    console.log(senators);
+                    console.log(senators, next);
                     senators = next;
                     next = [];
                 }
