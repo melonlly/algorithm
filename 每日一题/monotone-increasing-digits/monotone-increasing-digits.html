@@ -1,0 +1,65 @@
+<html>
+    <body>
+        <script>
+            /*
+                给定一个非负整数 N，找出小于或等于 N 的最大的整数，同时这个整数需要满足其各个位数上的数字是单调递增。
+                （当且仅当每个相邻位数上的数字 x 和 y 满足 x <= y 时，我们称这个整数是单调递增的。）
+
+                输入: N = 10
+                输出: 9
+
+                输入: N = 1234
+                输出: 1234
+
+                输入: N = 332
+                输出: 299
+            */
+            /**
+             * @param {number} N
+             * @return {number}
+             */
+            /*
+                规律：从个位开始，
+                    若当前位比前一位小或相等，则当前位的对应值为9，
+                    以此类推，直到当前位比前一位大，此时当前位的对应值为当前位减1
+                     如：332->299  4321->3999  10->09->9
+                    若当前位的前一位为0（则前一位的对应值必然为9），则当前位的对应值为9
+                     如：1005->999  2105->1099
+                    若当前位比前一位大，或已是最大位，则当前位的对应值为当前位的值
+                     如：1234->1234  
+            */
+            var monotoneIncreasingDigits = function (N) {
+                const arr = String(N).split('')
+                const res = []
+                for (let i = arr.length - 1; i >= 0; i--) {
+                    const cur = arr[i]
+                    const prev = arr[i-1]
+                    const next = arr[i+1]
+                    if (prev) {
+                        if (cur > prev) {
+                            if (prev == 0) {
+                                res.push(9)
+                            } else {
+                                res.push(cur)
+                            }
+                        } else {
+                            res.push(9)
+                        }
+                    } else {
+                        if (cur >= next) {
+                            res.push(cur - 1)
+                        } else {
+                            res.push(cur)
+                        }
+                    }
+                }
+                return Number(res.reverse().join(''))
+            };
+            console.log(monotoneIncreasingDigits(120)); // 119
+            // console.log(monotoneIncreasingDigits(101));
+            // console.log(monotoneIncreasingDigits(10));
+            // console.log(monotoneIncreasingDigits(1234));
+            // console.log(monotoneIncreasingDigits(332));
+        </script>
+    </body>
+</html>

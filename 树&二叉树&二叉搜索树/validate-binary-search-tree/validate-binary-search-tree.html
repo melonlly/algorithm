@@ -1,0 +1,78 @@
+<html>
+    <body>
+        <script>
+            /*
+                给定一个二叉树，判断其是否是一个有效的二叉搜索树。
+                假设一个二叉搜索树具有如下特征：
+                    节点的左子树只包含小于当前节点的数。
+                    节点的右子树只包含大于当前节点的数。
+                    所有左子树和右子树自身必须也是二叉搜索树。
+                    （不能相等！）
+                
+                输入:
+                        5
+                       / \
+                      1   4
+                         / \
+                        3   6
+                    输出: false
+                    解释: 输入为: [5,1,4,null,null,3,6]。
+                         根节点的值为 5 ，但是其右子节点值为 4 。
+
+            */
+            // Definition for a binary tree node.
+            function TreeNode(val, left, right) {
+                this.val = val === undefined ? 0 : val;
+                this.left = left === undefined ? null : left;
+                this.right = right === undefined ? null : right;
+            }
+            /**
+             * @param {TreeNode} root
+             * @return {boolean}
+             */
+            // Recursion O(N)
+            var isValidBST = function (root, min, max) {
+                if (!root) return true;
+                if (min != null && root.val <= min) return false;
+                if (max != null && root.val >= max) return false;
+                return (
+                    isValidBST(root.left, min, root.val) &&
+                    isValidBST(root.right, root.val, max)
+                );
+            };
+            const root = new TreeNode(0);
+            root.right = new TreeNode(-1)
+            console.log(isValidBST(root));
+
+            // 中序遍历 in-order => Array（升序数组）  O(N)
+            var isValidBST1 = function (root) {
+                const asc = inOrder(root);
+                // 判断asc是否是升序数组
+                return isAsc(asc);
+            };
+            // 中序遍历
+            var inOrder = function (root, array = []) {
+                if (!root) return [];
+                inOrder(root.left, array);
+                array.push(root.val);
+                inOrder(root.right, array);
+                return array;
+            };
+            // 是否是升序数组
+            var isAsc = function (array = []) {
+                let asc = [...new Set(array)];
+                asc.sort((a, b) => a - b);
+                for (let i = 0; i < array.length; i++) {
+                    if (array[i] !== asc[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+            // const root = new TreeNode(1);
+            // root.left = new TreeNode(1);
+            // root.right = new TreeNode(3);
+            // console.log(isValidBST1(root));
+        </script>
+    </body>
+</html>
