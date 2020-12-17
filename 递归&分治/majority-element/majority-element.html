@@ -1,0 +1,142 @@
+<html>
+    <script>
+        /*
+            给定一个大小为 n 的数组，找到其中的多数元素。多数元素是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
+
+            你可以假设数组是非空的，并且给定的数组总是存在多数元素
+
+            输入: [3,2,3]
+            输出: 3
+
+            输入: [2,2,1,1,1,2,2]
+            输出: 2
+        */
+        /**
+         * @param {number[]} nums
+         * @return {number}
+         */
+        // var majorityElement = function (nums) {};
+        // console.log(majorityElement([3,2,3]));
+        // console.log(majorityElement([2,2,1,1,1,2,2]));
+
+        /*
+            1.暴力求解 O(N^2)
+            2.Map: {x: count_x}
+            3.sort, count
+            4.分治
+            5.随机化
+        */
+        function majorityElement2(nums) {
+            const map = new Map();
+            for (let i = 0; i < nums.length; i++) {
+                const num = nums[i];
+                if (map.has(num)) {
+                    map.set(num, map.get(num) + 1);
+                } else {
+                    map.set(num, 1);
+                }
+            }
+            let res;
+            let max = 0;
+            map.forEach((count, num) => {
+                if (count > max) {
+                    max = count;
+                    res = num;
+                }
+            });
+            return res;
+        }
+        // console.log(majorityElement2([3,2,3]));
+        // console.log(majorityElement2([2,2,1,1,1,2,2]));
+
+        function majorityElement3(nums) {
+            if (nums.length == 1) return nums[0];
+            nums.sort((a, b) => a - b); // 递增
+            let res = nums[0];
+            let count = 1;
+            for (let i = 1; i < nums.length; i++) {
+                const num = nums[i];
+                if (res != num) {
+                    res = num;
+                    count = 1;
+                } else {
+                    count++;
+                    if (count > nums.length / 2) {
+                        return res;
+                    }
+                }
+            }
+        }
+        // console.log(majorityElement3([1]));
+        // console.log(majorityElement3([3,2,3]));
+        // console.log(majorityElement3([2,2,1,1,1,2,2]));
+
+        /*
+            分治
+                拆分数组为两个子数组（left、right），分别求其众数
+                若 left == right，则 left || right 就是该数组的众数
+                若 left != right，则 比较 count(left) 和 count(right)，返回较大数
+                以此类推，返回最大的count
+        */
+        function majorityElement4(nums) {
+            return majorityElementRec(nums, 0, nums.length - 1);
+        }
+        function majorityElementRec(nums, start, end) {
+            if (start == end) return nums[start];
+            const mid = ((end - start) >> 1) + start;
+            const left = majorityElementRec(nums, start, mid);
+            const right = majorityElementRec(nums, mid + 1, end);
+            if (left == right) return left;
+            const leftCount = countInRange(nums, left, start, end);
+            const rightCount = countInRange(nums, right, start, end);
+            return leftCount > rightCount ? left : right;
+        }
+        function countInRange(nums, num, start, end) {
+            let count = 0;
+            for (let i = start; i <= end; i++) {
+                if (nums[i] == num) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        console.log(majorityElement4([3, 2, 3]));
+        console.log(majorityElement4([2, 2, 1, 1, 1, 2, 2]));
+
+        /*
+            随机化
+                因为超过 n/2 的数组下标被众数占据了，这样我们随机挑选一个下标对应的元素并验证，有很大的概率能找到众数
+            算法
+                由于一个给定的下标对应的数字很有可能是众数，我们随机挑选一个下标，检查它是否是众数，
+                如果是就返回，否则继续随机挑选
+            优化
+                记录已排除元素，避免重复计算
+        */
+        function majorityElement5(nums) {
+            let exclude = [];
+            while (true) {
+                let candidate = nums[parseInt(Math.random() * nums.length)];
+                if (exclude.indexOf(candidate) > -1) {
+                    continue;
+                } else {
+                    if (countOccurences(nums, candidate) > nums.length / 2) {
+                        return candidate;
+                    } else {
+                        exclude.push(candidate);
+                    }
+                }
+            }
+        }
+        function countOccurences(nums, num) {
+            let count = 0;
+            for (let i = 0; i < nums.length; i++) {
+                if (nums[i] == num) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        // console.log(majorityElement5([3, 2, 3]));
+        // console.log(majorityElement5([2, 2, 1, 1, 1, 2, 2]));
+    </script>
+</html>
