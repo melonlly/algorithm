@@ -1,0 +1,74 @@
+<html>
+    <script>
+        /*
+            给定两个字符串 s 和 t，它们只包含小写字母。
+
+            字符串 t 由字符串 s 随机重排，然后在随机位置添加一个字母。
+
+            请找出在 t 中被添加的字母。
+
+            输入：s = "abcd", t = "abcde"
+            输出："e"
+            解释：'e' 是那个被添加的字母。
+
+            输入：s = "", t = "y"
+            输出："y"
+
+            输入：s = "ae", t = "aea"
+            输出："a"
+        */
+        /**
+         * @param {string} s
+         * @param {string} t
+         * @return {character}
+         */
+        // sort
+        var findTheDifference = function (s, t) {
+            if (!s || s.length == 0) return t;
+            s = s.split("").sort();
+            t = t.split("").sort();
+            for (let i = 0; i < t.length; i++) {
+                if (i == t.length - 1 || t[i] != s[i]) return t[i];
+            }
+        };
+        // console.log(findTheDifference("abcd", "abcde"));
+        // console.log(findTheDifference("ae", "aea"));
+        let s =
+            "ymbgaraibkfmvocpizdydugvalagaivdbfsfbepeyccqfepzvtpyxtbadkhmwmoswrcxnargtlswqemafandgkmydtimuzvjwxvlfwlhvkrgcsithaqlcvrihrwqkpjdhgfgreqoxzfvhjzojhghfwbvpfzectwwhexthbsndovxejsntmjihchaotbgcysfdaojkjldprwyrnischrgmtvjcorypvopfmegizfkvudubnejzfqffvgdoxohuinkyygbdzmshvyqyhsozwvlhevfepdvafgkqpkmcsikfyxczcovrmwqxxbnhfzcjjcpgzjjfateajnnvlbwhyppdleahgaypxidkpwmfqwqyofwdqgxhjaxvyrzupfwesmxbjszolgwqvfiozofncbohduqgiswuiyddmwlwubetyaummenkdfptjczxemryuotrrymrfdxtrebpbjtpnuhsbnovhectpjhfhahbqrfbyxggobsweefcwxpqsspyssrmdhuelkkvyjxswjwofngpwfxvknkjviiavorwyfzlnktmfwxkvwkrwdcxjfzikdyswsuxegmhtnxjraqrdchaauazfhtklxsksbhwgjphgbasfnlwqwukprgvihntsyymdrfovaszjywuqygpvjtvlsvvqbvzsmgweiayhlubnbsitvfxawhfmfiatxvqrcwjshvovxknnxnyyfexqycrlyksderlqarqhkxyaqwlwoqcribumrqjtelhwdvaiysgjlvksrfvjlcaiwrirtkkxbwgicyhvakxgdjwnwmubkiazdjkfmotglclqndqjxethoutvjchjbkoasnnfbgrnycucfpeovruguzumgmgddqwjgdvaujhyqsqtoexmnfuluaqbxoofvotvfoiexbnprrxptchmlctzgqtkivsilwgwgvpidpvasurraqfkcmxhdapjrlrnkbklwkrvoaziznlpor";
+        let t =
+            "qhxepbshlrhoecdaodgpousbzfcqjxulatciapuftffahhlmxbufgjuxstfjvljybfxnenlacmjqoymvamphpxnolwijwcecgwbcjhgdybfffwoygikvoecdggplfohemfypxfsvdrseyhmvkoovxhdvoavsqqbrsqrkqhbtmgwaurgisloqjixfwfvwtszcxwktkwesaxsmhsvlitegrlzkvfqoiiwxbzskzoewbkxtphapavbyvhzvgrrfriddnsrftfowhdanvhjvurhljmpxvpddxmzfgwwpkjrfgqptrmumoemhfpojnxzwlrxkcafvbhlwrapubhveattfifsmiounhqusvhywnxhwrgamgnesxmzliyzisqrwvkiyderyotxhwspqrrkeczjysfujvovsfcfouykcqyjoobfdgnlswfzjmyucaxuaslzwfnetekymrwbvponiaojdqnbmboldvvitamntwnyaeppjaohwkrisrlrgwcjqqgxeqerjrbapfzurcwxhcwzugcgnirkkrxdthtbmdqgvqxilllrsbwjhwqszrjtzyetwubdrlyakzxcveufvhqugyawvkivwonvmrgnchkzdysngqdibhkyboyftxcvvjoggecjsajbuqkjjxfvynrjsnvtfvgpgveycxidhhfauvjovmnbqgoxsafknluyimkczykwdgvqwlvvgdmufxdypwnajkncoynqticfetcdafvtqszuwfmrdggifokwmkgzuxnhncmnsstffqpqbplypapctctfhqpihavligbrutxmmygiyaklqtakdidvnvrjfteazeqmbgklrgrorudayokxptswwkcircwuhcavhdparjfkjypkyxhbgwxbkvpvrtzjaetahmxevmkhdfyidhrdeejapfbafwmdqjqszwnwzgclitdhlnkaiyldwkwwzvhyorgbysyjbxsspnjdewjxbhpsvj";
+        // console.log(findTheDifference(s, t));
+
+        // ascii码求和
+        function findTheDifference1(s, t) {
+            let sumS = 0;
+            let sumT = 0;
+            for (const i of s) {
+                sumS += s[i].charCodeAt();
+            }
+            for (const i of t) {
+                sumT += t[i].charCodeAt();
+            }
+            return String.fromCharCode(sumT - sumS);
+        }
+        // console.log(findTheDifference1(s, t));
+
+        // 位运算 - ^ - 位异或运算
+        // 如果将两个字符串拼接成一个字符串，则问题转换成求字符串中出现奇数次的字符
+        // xxxx 与 0000 做位异或运算
+        //    第一次运算结果为 xxxx
+        //    第二次运算结果为 0000
+        // 如此往复，则若存在某个数存在奇数次，则计算结果为 xxxx
+        function findTheDifference2(s, t) {
+            let ret = 0;
+            for (const ch of s) {
+                ret ^= ch.charCodeAt();
+            }
+            for (const ch of t) {
+                ret ^= ch.charCodeAt();
+            }
+            return String.fromCharCode(ret);
+        }
+        console.log(findTheDifference2(s, t));
+    </script>
+</html>
