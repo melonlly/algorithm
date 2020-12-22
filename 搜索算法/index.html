@@ -1,0 +1,71 @@
+<html>
+    <ul>
+        <li><a href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal/" target="_blank"></a></li>
+    </ul>
+    <script>
+        function TreeNode(val) {
+            this.val = val;
+            this.left = this.right = null;
+        }
+        /*
+             3          
+            / \
+           9  20        
+          /  /  \
+         2  15   7
+        */
+        const root = new TreeNode(3);
+        root.left = new TreeNode(9);
+        root.left.left = new TreeNode(2);
+        root.right = new TreeNode(20);
+        root.right.right = new TreeNode(7);
+        root.right.left = new TreeNode(15);
+    </script>
+    <script>
+        /*
+            广度优先搜索（BFS）
+                逐层搜索，默认从左到右
+        */
+        function BFS(root) {
+            const queue = [];
+            queue.push(root);
+            while (queue && queue.length > 0) {
+                // 左到右
+                const node = queue.shift(); // 当前节点
+                // todo sth
+                console.log(node.val);
+                if (node.left) queue.push(node.left);
+                if (node.right) queue.push(node.right);
+
+                // 右到左
+                // const node = queue.shift()
+                // console.log(node.val);
+                // if (node.right) queue.push(node.right)
+                // if (node.left) queue.push(node.left)
+            }
+        }
+        // BFS(root);
+    </script>
+    <script>
+        /*
+            深度优先搜索（DFS）
+                判断是否存在子节点，
+                    存在则继续向下查找
+                    不存在则，判断当前节点的父节点，是否存在其他子节点，
+                同上规则遍历
+            通过递归实现
+                递归本身是栈的结构
+        */
+        function DFS(node) {
+            // todo sth
+            console.log(node.val);
+            const childs = []
+            if (node.left) childs.push(node.left)
+            if (node.right) childs.push(node.right)
+            for (let i = 0; i < childs.length; i++) {
+                DFS(childs[i])
+            }
+        }
+        DFS(root)
+    </script>
+</html>
