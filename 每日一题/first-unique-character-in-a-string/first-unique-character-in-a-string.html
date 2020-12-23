@@ -39,13 +39,27 @@
             }
             return indexs.length ? Math.min(...indexs) : -1;
         };
-        console.log(firstUniqChar("leetcode"));
-        console.log(firstUniqChar("loveleetcode"));
+        // console.log(firstUniqChar("leetcode"));
+        // console.log(firstUniqChar("loveleetcode"));
 
         /*
-
+            遍历 - 查找
         */
-        var firstUniqChar1 = function (s) {};
+        var firstUniqChar1 = function (s) {
+            if (!s) return -1;
+            if (s.length == 1) return 0;
+            const len = s.length;
+            const set = new Set() // 保存存在重复情况的字符
+            for (let i = 0; i < len; i++) {
+                if (set.has(s[i])) continue
+                if (s.lastIndexOf(s[i]) == i) {
+                    return i
+                } else {
+                    set.add(s[i])
+                }
+            }
+            return -1
+        };
         console.log(firstUniqChar1("leetcode"));
         console.log(firstUniqChar1("loveleetcode"));
     </script>

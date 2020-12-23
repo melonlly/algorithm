@@ -1,0 +1,68 @@
+<html>
+    <script>
+        /*
+            数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合
+
+            输入：n = 3
+            输出：
+                [
+                    "((()))",
+                    "(()())",
+                    "(())()",
+                    "()(())",
+                    "()()()"
+                ]
+        */
+        /**
+         * @param {number} n
+         * @return {string[]}
+         */
+        /*
+            数学归纳法
+                n=1, ()
+                n=2, ()() (())
+                n=3, ()()() ()(()) (())() (()()) ((()))
+                ... 
+        */
+        var generateParenthesis = function (n) {};
+        // console.log(generateParenthesis(3));
+
+        /*
+            遍历2n个括号的所有情况
+            验证合法情况
+            去重
+        */
+        var generateParenthesis1 = function (n) {};
+        // console.log(generateParenthesis1(3));
+
+        /*
+            深度优先搜索 + 剪枝  O(2^n)
+                DFS：2n个位置，递归每个位置放入左括号或右括号
+                剪枝：
+                    1.局部不合法，不再递归
+                    2.左右括号各只有n个，放置到2n的位置时，若已经用完n个，则不能再使用
+        */
+        var generateParenthesis2 = function (n) {
+            const res = [];
+            _gen(0, 0, n, "", res);
+            return res;
+        };
+        /*
+            left    左括号使用的个数
+            right   右括号使用的个数
+            n       括号总个数
+            str     结果字符串
+            res     结果集
+        */
+        function _gen(left, right, n, str, res) {
+            if (left == n && right == n) {
+                res.push(str);
+                return;
+            }
+            if (left < n) _gen(left + 1, right, n, str + "(", res);
+            if (right < n && left > right)
+                _gen(left, right + 1, n, str + ")", res);
+        }
+        console.log(generateParenthesis2(3));
+    </script>
+</html>
