@@ -1,0 +1,52 @@
+<html>
+    <script>
+        /*
+            给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1
+
+            s = "leetcode"
+            返回 0
+
+            s = "loveleetcode"
+            返回 2
+        */
+        /**
+         * @param {string} s
+         * @return {number}
+         */
+        /*
+            用map的key记录字母，value记录字母的位置
+            遍历时将字母加到map中，若存在重复字母，将value改为-1
+            返回map中最小的value
+        */
+        var firstUniqChar = function (s) {
+            if (!s) return -1;
+            if (s.length == 1) return 0;
+            const map = new Map();
+            const len = s.length;
+            for (let i = 0; i < len; i++) {
+                if (map.has(s[i])) {
+                    map.set(s[i], -1);
+                } else {
+                    map.set(s[i], i);
+                }
+            }
+            let indexs = [];
+            // 若只存在-1，则不存在不重复字符
+            for (const val of map.values()) {
+                if (val > -1) {
+                    indexs.push(val);
+                }
+            }
+            return indexs.length ? Math.min(...indexs) : -1;
+        };
+        console.log(firstUniqChar("leetcode"));
+        console.log(firstUniqChar("loveleetcode"));
+
+        /*
+
+        */
+        var firstUniqChar1 = function (s) {};
+        console.log(firstUniqChar1("leetcode"));
+        console.log(firstUniqChar1("loveleetcode"));
+    </script>
+</html>
