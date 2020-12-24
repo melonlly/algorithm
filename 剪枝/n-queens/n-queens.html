@@ -1,0 +1,95 @@
+<html>
+    <script>
+        /*
+            n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击
+
+            给定一个整数 n，返回所有不同的 n 皇后问题的解决方案。
+
+            每一种解法包含一个明确的 n 皇后问题的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位
+
+            提示：皇后彼此不能相互攻击，也就是说：任何两个皇后都不能处于同一条横行、纵行或斜线上
+        */
+        /**
+         * @param {number} n
+         * @return {string[][]}
+         */
+        /*
+            DFS + 剪枝
+        */
+        var solveNQueens = function (n) {
+            if (n < 1) return [];
+            // vertical、up、down是不能放置的集合
+            const exclude = {
+                vertical: new Set(), // 垂直集合
+                // 左斜线集合 =>（row + col）若queen在（row, col）放置，则其他位置若满足行列和与queen的行列和相同，则不能再放置queen
+                up: new Set(),
+                // 右斜线集合 =>（row - col）若queen在（row, col）放置，则其他位置若满足行列差与queen的行列差相同，则不能再放置queen
+                down: new Set(),
+            };
+            const result = []
+            DFS(result, exclude, n, 0, []);
+            console.log(result);
+            return _gen(n, result);
+        };
+        // 生成结果
+        function _gen(n, result) {
+            const res = [];
+            for (let i = 0; i < result.length; i++) {
+                let queens = [];
+                for (let j = 0; j < result[i].length; j++) {
+                    let str = "";
+                    for (let s = 0; s < n; s++) {
+                        if (s == result[i][j]) {
+                            str += "Q";
+                        } else {
+                            str += ".";
+                        }
+                    }
+                    queens.push(str);
+                }
+                res.push(queens);
+            }
+            return res;
+        }
+        /*
+            result  结果集
+            exclude 排除集合
+            n
+            row     第几层
+            queens  当前结果皇后放置位置集合    
+        */
+        function DFS(result, exclude, n, row, queens) {
+            // 终止条件：遍历完成
+            if (row >= n) {
+                result.push(queens);
+                return;
+            }
+            // 遍历每列：放置queen
+            for (let col = 0; col < n; col++) {
+                // 若当前点存在于不能放置的集合中，continue
+                if (
+                    exclude.vertical.has(col) ||
+                    exclude.up.has(row + col) ||
+                    exclude.down.has(row - col)
+                ) {
+                    continue;
+                }
+                // 该（row, col）可以放置queen，更新不能放置的集合
+                exclude.vertical.add(col);
+                exclude.up.add(row + col);
+                exclude.down.add(row - col);
+
+                queens.push(col);
+                // 一行有且仅有一个queen
+                // 存在引用问题
+                DFS(result, exclude, n, row + 1, [...queens]);
+
+                // 为啥要删掉？
+                exclude.vertical.delete(col);
+                exclude.up.delete(row + col);
+                exclude.down.delete(row - col);
+            }
+        }
+        console.log(solveNQueens(4));
+    </script>
+</html>
