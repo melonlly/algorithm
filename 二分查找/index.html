@@ -1,0 +1,27 @@
+<html>
+    <ul>
+        <li>
+            <p><a href="https://leetcode-cn.com/problems/sqrtx/" target="_blank"></a></p>
+        </li>
+    </ul>
+    <script>
+        /*
+            二分查找 binary search
+                每次查找mid
+        */
+        function binarySearch(array = [], target) {
+            let left = 0 // 左指针
+            let right = array.length - 1 // 右指针
+            while (left <= right) {
+                mid = (left + right) / 2 // 中间元素
+                if (array[mid] == target) {
+                    return mid
+                } else if (array[mid] < target) {
+                    left = mid + 1
+                } else {
+                    right = mid - 1
+                }
+            }
+        }
+    </script>
+</html>

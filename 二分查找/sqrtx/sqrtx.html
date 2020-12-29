@@ -1,0 +1,52 @@
+<html>
+    <script>
+        /*
+            实现 int sqrt(int x) 函数。
+            计算并返回 x 的平方根，其中 x 是非负整数。
+            由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。
+
+            输入: 8
+            输出: 2
+            说明: 8 的平方根是 2.82842..., 
+                由于返回类型是整数，小数部分将被舍去。
+        */
+        /**
+         * @param {number} x
+         * @return {number}
+         */
+        // 因为 y=x^2 是单调递增的
+        // 因此可以使用二分查找
+        var mySqrt = function (x) {
+            if (x < 2) return x
+            let l = 0
+            let r = x
+            let res
+            while (l <= r) {
+                let mid = parseInt((l + r) / 2)
+                let y = x / mid
+                if (mid == y) {
+                    return mid
+                } else if (mid > y) {
+                    r = mid -1
+                } else {
+                    l = mid + 1
+                    res = mid
+                }
+            }
+            return res
+        };
+        // console.log(mySqrt(10));
+
+        /*
+            牛顿迭代法
+        */
+        var mySqrt1 = function (x) {
+            let r = x
+            while (r * r > x) {
+                r = (r + x / r) / 2
+            }
+            return r
+        };
+        // console.log(mySqrt1(5));
+    </script>
+</html>
