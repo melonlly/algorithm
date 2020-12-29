@@ -3,7 +3,7 @@
         <li>
             <p>
                 <a
-                    href="https://leetcode-cn.com/problems/n-queens/"
+                    href="https://leetcode-cn.com/problems/climbing-stairs/"
                     target="_blank"
                 ></a>
             </p>
@@ -11,11 +11,16 @@
     </ul>
     <script>
         /*
-            动态规划
+            动态规划 Dynamic Programming
                 1.递归+记忆化 -> 递推
                 2.状态的定义
                 3.状态转移方程
                 4.最优子结构
+            
+            DP vs 回溯 vs 贪心
+                回溯（递归）- 重复计算
+                贪心 - 永远局部最优
+                DP - 记录局部最优子结构 / 多种记录值
         */
         // 斐波那契数列
         function fib(n) {
@@ -43,7 +48,7 @@
             for (let i = 2; i <= n; i++) {
                 F[i] = F[i - 1] + F[i - 2];
             }
-            return F[n] % 1000000007;
+            return F[n];
         }
         console.log(fib2(45));
     </script>
