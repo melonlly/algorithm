@@ -1,0 +1,42 @@
+<html>
+    <script>
+        /*
+            给定一个三角形，找出自顶向下的最小路径和。每一步只能移动到下一行中相邻的结点上。
+
+            相邻的结点 在这里指的是 下标 与 上一层结点下标 相同或者等于 上一层结点下标 + 1 的两个结点
+
+            给定三角形：
+                [
+                       [2],
+                      [3,4],
+                     [6,5,7],
+                    [4,1,8,3]
+                ]
+                自顶向下的最小路径和为 11（即，2 + 3 + 5 + 1 = 11）
+        */
+        /*
+            DP 
+                自下而上，目标(0, 0)
+                DP[row, col]: bottom -> (row, col)
+                最小路径和 = min(DP[row+1, col], DP[row+1, col+1]) + val(row, col)
+        */
+        var minimumTotal = function (triangle) {
+            const len = triangle.length;
+            const mini = [...triangle[len - 1]]; // 最下一行的最小路径就是其自身
+            for (let row = len - 2; row >= 0; --row) {
+                for (let col = 0; col < mini.length; col++) {
+                    mini[col] =
+                        triangle[row][col] + Math.min(mini[col], mini[col + 1]);
+                }
+            }
+            return mini[0]; // 遍历到(0, 0)时，mini中第一位就是 val(0, 0) + min(DP[1, 0], DP[1, 1])
+        };
+        console.log(minimumTotal([[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]));
+
+        /*
+            回溯
+        */
+        var minimumTotal1 = function (triangle) {};
+        // console.log(minimumTotal1([[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]));
+    </script>
+</html>
