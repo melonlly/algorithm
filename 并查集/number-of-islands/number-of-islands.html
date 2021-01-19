@@ -1,0 +1,127 @@
+<html>
+    <script>
+        /*
+            给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
+
+            岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+
+            此外，你可以假设该网格的四条边均被水包围。
+
+            输入：grid = [
+                ["1","1","1","1","0"],
+                ["1","1","0","1","0"],
+                ["1","1","0","0","0"],
+                ["0","0","0","0","0"]
+            ]
+            输出：1
+
+            输入：grid = [
+                ["1","1","0","0","0"],
+                ["1","1","0","0","0"],
+                ["0","0","1","0","0"],
+                ["0","0","0","1","1"]
+            ]
+            输出：3
+        */
+        /*
+            并查集
+                a.初始化（针对所有'1'节点）
+                b.遍历所有节点
+                    '1'节点，相邻节点合并
+                    '0'节点，continue
+                c.遍历所有'1'节点，统计不同集合的数量（可省略，在b中即可统计）
+        */
+        var numIslands = function (grid) {
+            const uf = new UnionFind(grid);
+            const m = grid.length;
+            const n = grid[0].length;
+            const dirs = [
+                [0, 1],
+                [0, -1],
+                [-1, 0],
+                [1, 0],
+            ]; // 上下左右
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < n; j++) {
+                    if (grid[i][j] == "1") {
+                        // 遍历 上下左右 的节点
+                        for (let d = 0; d < dirs.length; d++) {
+                            const [ni, nj] = [i + dirs[d][0], j + dirs[d][1]];
+                            // 判断新坐标是否合法
+                            if (
+                                ni >= 0 &&
+                                nj >= 0 &&
+                                ni < m &&
+                                nj < n &&
+                                grid[ni][nj] == "1"
+                            ) {
+                                uf.union(i * n + j, ni * n + nj); // 合并 当前节点 和 临近节点
+                            }
+                        }
+                    }
+                }
+            }
+            return uf.count;
+        };
+        class UnionFind {
+            constructor(grid) {
+                const m = grid.length;
+                const n = grid[0].length;
+                // 初始化
+                this.count = 0;
+                this.parent = new Array(m * n).fill(-1);
+                this.rank = new Array(m * n).fill(0); // 优化一：深度优化
+                for (let i = 0; i < m; i++) {
+                    for (let j = 0; j < n; j++) {
+                        if (grid[i][j] == "1") {
+                            this.parent[i * n + j] = i * n + j;
+                            this.count += 1; // 统计有多少个1
+                        }
+                    }
+                }
+            }
+            find(i) {
+                if (this.parent[i] != i) {
+                    this.parent[i] = this.find(this.parent[i]);
+                }
+                return this.parent[i];
+            }
+            union(x, y) {
+                const rootx = this.find(x);
+                const rooty = this.find(y);
+                if (rootx != rooty) {
+                    if (this.rank[rootx] > this.rank[rooty]) {
+                        this.parent[rooty] = rootx;
+                    } else if (this.rank[rootx] < this.rank[rooty]) {
+                        this.parent[rootx] = rooty;
+                    } else {
+                        this.parent[rooty] = rootx; // 节点y归到节点x
+                        this.rank[rootx] += 1; // 节点x深度加1
+                    }
+                    this.count -= 1;
+                }
+            }
+        }
+        console.log(
+            numIslands([
+                ["1", "1", "0", "0", "0"],
+                ["1", "1", "0", "0", "0"],
+                ["0", "0", "1", "0", "0"],
+                ["0", "0", "0", "1", "1"],
+            ])
+        );
+
+        /*
+            染色算法 Flood-Fill
+                遍历节点
+                    if node == '1'：
+                        count++
+                        将当前节点和附近'1'节点 -> '0'    ！！！  1.DFS 2.BFS
+                    else node == '0'：
+                        continue
+                return count
+            
+        */
+        var numIslands1 = function (grid) {};
+    </script>
+</html>

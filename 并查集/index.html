@@ -1,0 +1,63 @@
+<html>
+
+    <ul>
+        <li><a href="https://leetcode-cn.com/problems/number-of-islands/" target="_blank"></a></li>
+        <li><a href="https://leetcode-cn.com/problems/friend-circles/" target="_blank">547</a></li>
+        <li><a href="https://leetcode-cn.com/problems/number-of-provinces/" target="_blank">547</a></li>
+    </ul>
+
+    <script>
+        /*
+            并查集算法（union & find）
+                是一种树形的数据结构，用于处理一些不交集（Disjoint Sets）的合并及查询问题
+            
+            find：确定元素属于哪一个子集。它可以被用来确定两个元素是否属于同一子集
+
+            union：将两个子集合并成同一个集合
+
+            优化：
+                1.合并的时候，将深度较低的合并到深度较高的集合，合并的结果的深度会较低
+                2.路径压缩
+        */
+    </script>
+    <script>
+        class QuickUnionUF {
+            roots = [];
+
+            // 初始化（各自为营）
+            constructor(N) {
+                for (let i = 0; i < N; i++) {
+                    roots[i] = i; // 自己是自己的boss
+                }
+            }
+
+            // 根节点查找（路径压缩）
+            findRoot(i) {
+                let root = i;
+                // 查找节点i的boss
+                while (root != roots[root]) {
+                    root = roots[root];
+                }
+                // 路径压缩
+                while (i != roots[i]) {
+                    let tmp = roots[i];
+                    roots[i] = root; // boss直接管理所有小弟
+                    i = tmp;
+                }
+                return root;
+            }
+
+            // 判断是否与关联
+            connected(p, q) {
+                return this.findRoot(p) == this.findRoot(q);
+            }
+
+            // 合并
+            union(p, q) {
+                const qroot = this.findRoot(q);
+                const proot = this.findRoot(p);
+                roots[proot] = qroot;
+            }
+        }
+    </script>
+</html>
