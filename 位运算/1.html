@@ -1,0 +1,39 @@
+<html>
+  <body>
+    <script>
+      /*
+        一个数组中，仅有一个数出现奇数次，其他数都出现偶数次，求出现奇数次数字？
+        */
+      function func1(arr) {
+        let eor = 0;
+        arr.forEach((i) => {
+          eor ^= i;
+        });
+        return eor;
+      }
+      console.log(func1([1, 1, 2, 2, 3, 3, 4]));
+    </script>
+    <script>
+      /*
+        一个数组中，仅有两个数出现奇数次，其他数都出现偶数次，求出现奇数次的两个数字？（a, b）
+    */
+      function func2(arr) {
+        let eor, // a ^ b
+          eor1, // a || b
+          rightOne = 0;
+        arr.forEach((i) => {
+          eor ^= i;
+        });
+        console.log(eor); // a ^ b
+        rightOne = eor & (~eor + 1); // 取最右位置为1的数
+        arr.forEach((i) => {
+          if ((rightOne & i) == 0) {
+            eor1 ^= i;
+          }
+        });
+        console.log(eor1, eor ^ eor1);
+      }
+      func2([1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5]);
+    </script>
+  </body>
+</html>
