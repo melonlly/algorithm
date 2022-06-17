@@ -1,0 +1,265 @@
+<html>
+
+<body>
+
+    <script>
+        /*
+            编写一个函数来查找字符串数组中的最长公共前缀。
+            如果不存在公共前缀，返回空字符串 ""。
+
+            输入：strs = ["flower","flow","flight"]
+            输出："fl"
+
+            输入：strs = ["dog","racecar","car"]
+            输出：""
+            解释：输入不存在公共前缀。
+        */
+        function LongestCommonPrefix(strs) {
+            if (!strs || !strs.length) return "";
+            if (strs.length == 1) return strs[0];
+            /* 暴力查找法 */
+            // let res = "";
+            // for (let x = 0; x < strs[0].length; x++) {
+            //     let flag = true;
+            //     for (let y = 1; y < strs.length; y++) {
+            //         if (strs[0][x] == strs[y][x] && y == strs.length - 1) {
+            //             res += strs[0][x];
+            //         } else if (strs[0][x] != strs[y][x]) {
+            //             flag = false;
+            //             break;
+            //         }
+            //     }
+            //     if (!flag) break;
+            // }
+            // return res;
+
+            /* 抖机灵：every() */
+            let res = "";
+            for (var i = 0; i < strs[0].length; i++) {
+                if (strs.every(_ => strs[0][i] === _[i])) {
+                    res += strs[0][i];
+                } else {
+                    break;
+                }
+            }
+            return res;
+        }
+        // console.log(LongestCommonPrefix(["flower", "flow", "flight"]));
+        // console.log(LongestCommonPrefix(["dog", "racecar", "car"]));
+        // console.log(LongestCommonPrefix(["cir", "car"]));
+    </script>
+
+    <script>
+        /*
+            翻转字符串里的单词
+            
+            输入：s = "the sky is blue"
+            输出："blue is sky the"
+
+            输入：s = "  hello world  "
+            输出："world hello"
+
+            输入：s = "a good   example"
+            输出："example good a"
+        */
+        var reverseWords = function (s) {
+            if (!s || !s.length) return "";
+            return s.split(" ").filter(Boolean).reverse().join(" ");
+        };
+    </script>
+
+    <script>
+        /*
+            实现 strStr() 函数
+            给你两个字符串 haystack 和 needle ，请你在 haystack 字符串中找出 needle 字符串出现的第一个位置（下标从 0 开始）。如果不存在，则返回  -1 。
+        */
+        // KMP算法
+        var strStr = function (haystack, needle) {
+            const next = getNext(needle)
+            const haystackLen = haystack.length
+            const needleLen = needle.length
+            let i = 0, j = 0
+            while (i < haystackLen && j < needleLen) {
+                if (j < 0 || haystack[i] === needle[j]) {
+                    i++;
+                    j++;
+                } else {
+                    j = next[j];
+                }
+            }
+            if (j === needleLen) {
+                return i - j;
+            }
+            return -1;
+        };
+
+        const getNext = (str) => {
+            const len = str.length
+            let j = 0
+            let t = -1
+            const next = Array(len)
+            next[0] = t
+
+            // 是否遍历完
+            while (j < len - 1) {
+                // 
+                if (t < 0 || str[j] === str[t]) {
+                    j++
+                    t++
+                    next[j] = t
+                } else {
+                    t = next[t]
+                }
+            }
+            return next
+        }
+    </script>
+
+    <script>
+        /*
+            反转字符串（双指针）
+        */
+        function reverseString(s) {
+            let left = 0, right = s.length - 1
+            while (left < right) {
+                [s[left], s[right]] = [s[right], s[left]]
+                left++
+                right--
+            }
+        };
+        // console.log(reverseString(["H", "a", "n", "n", "a", "h"]));
+    </script>
+
+    <script>
+        /*
+            数组拆分 I
+            给定长度为 2n 的整数数组 nums ，你的任务是将这些数分成 n 对, 例如 (a1, b1), (a2, b2), ..., (an, bn) ，使得从 1 到 n 的 min(ai, bi) 总和最大。
+
+            输入：nums = [1,4,3,2]
+            输出：4
+            解释：所有可能的分法（忽略元素顺序）为：
+            1. (1, 4), (2, 3) -> min(1, 4) + min(2, 3) = 1 + 2 = 3
+            2. (1, 3), (2, 4) -> min(1, 3) + min(2, 4) = 1 + 2 = 3
+            3. (1, 2), (3, 4) -> min(1, 2) + min(3, 4) = 1 + 3 = 4
+            所以最大总和为 4
+        */
+        var arrayPairSum = function (nums) {
+            let sum = 0;
+
+            // 排序 -> 偶数index位置和
+            nums.sort((a, b) => a - b);
+            for (let i = 0; i < nums.length; i += 2) {
+                sum += nums[i];
+            }
+
+            return sum;
+        };
+    </script>
+
+    <script>
+        /*
+            移除元素
+                给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
+                不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。
+                元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+        */
+        var removeElement = function (nums, val) {
+            let slow = 0;
+            for (let fast = 0; fast < nums.length; fast++) {
+                if (nums[fast] != val) {
+                    nums[slow] = nums[fast];
+                    slow++
+                }
+            }
+            return slow;
+        };
+    </script>
+
+    <script>
+        /*
+            最大连续1的个数
+                给定一个二进制数组 nums ， 计算其中最大连续 1 的个数。
+                nums[i] 不是 0 就是 1
+        */
+        var findMaxConsecutiveOnes = function (nums) {
+            let count = 0, res = 0;
+            for (let i = 0; i < nums.length; i++) {
+                if (nums[i]) {
+                    // 1
+                    count++
+                } else {
+                    // 0
+                    res = count > res ? count : res;
+                    count = 0;
+                }
+            }
+            return count > res ? count : res;
+        };
+    </script>
+
+    <script>
+        /*
+            长度最小的子数组
+                给定一个含有 n 个正整数的数组和一个正整数 target
+                找出该数组中满足其和 ≥ target 的长度最小的 连续子数组 [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。
+            
+            输入：target = 7, nums = [2,3,1,2,4,3]
+            输出：2
+            解释：子数组 [4,3] 是该条件下的长度最小的子数组。
+
+            输入：target = 4, nums = [1,4,4]
+            输出：1
+
+            输入：target = 11, nums = [1,1,1,1,1,1,1,1]
+            输出：0
+        */
+        var minSubArrayLen = function (target, nums) {
+            let slow = 0, fast = 0, count = 0, res = 0;
+            for (; fast < nums.length; fast++) {
+                count += nums[fast];
+                if (count >= target) {
+                    res = !res ? fast - slow + 1 : fast - slow + 1 < res ? fast - slow + 1 : res;
+                    count = 0;
+                    fast = slow++;
+                }
+            }
+            return res;
+        };
+        // console.log(minSubArrayLen(7, [2, 3, 1, 2, 4, 3]));
+        // console.log(minSubArrayLen(11, [1, 2, 3, 4, 5]));
+        // console.log(minSubArrayLen(15, [1, 2, 3, 4, 5]));
+    </script>
+
+    <script>
+        /*
+            反转字符串中的单词 III
+                给定一个字符串 s ，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序
+            
+            输入：s = "Let's take LeetCode contest"
+            输出："s'teL ekat edoCteeL tsetnoc"
+        */
+        var reverseWords = function (s) {
+            const arr = s.split(' ');
+            for (let i = 0; i < arr.length; i++) {
+                arr[i] = [...arr[i]].reverse().join('');
+            }
+            return arr.join(' ');
+        };
+    </script>
+
+    <script>
+        /*
+            移动零
+                给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+            
+            输入: nums = [0,1,0,3,12]
+            输出: [1,3,12,0,0]
+        */
+        var moveZeroes = function(nums) {
+
+        };
+    </script>
+
+</body>
+
+</html>
